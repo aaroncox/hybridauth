@@ -1,9 +1,78 @@
 Hybridauth Change log
 =====================
-2.7.0 - XXX
+2.9.2 - xxx
+      Fixes:
+        #753 + #745 - [Facebook] Return `setUserStatus` functionality
+
+2.9.1 - March 25 2017
+      Fixes:
+        #751 - [Google] Auth break on 2.9.0
+	
+2.9.0 - March 24 2017
+      New providers: 
+        #740 + #741 - Discord
+        #737 + #738 - idQ
+        #718 - Envato
+        #711 + #712 - Stripe
+      Fixes:
+        #715 - [LinkedIn] Removed unset() which breaks PHP 7.1 compatibility
+        #722 - [Core] Add notice about maintainance mode of the library
+        #732 - [Amazon] Fix wrong lowercase in filename
+        #733 - [Live] Fix authorize_url for windows live
+        #735 - [LinkedIn] location feature
+        #727 + #734 - [Facebook] Fix problem which occurs during calling the Facebook Graph API to getAccessToken() for a specific redirectUrl
+        #729 - [Facebook] Fix wrong country data
+        #736 - [Google] Resolve issue in obtaining contacts
+
+2.8.2 - December 9 2016
+      Fixes:
+        #707 - [Core] OAuth2Client RFC6749 compliant requests (fixes #694)
+        #710 - [Core] Fix error message delivery
+
+2.8.1 - December 5 2016
+      Fixes:
+        #696 - [Core] Passing more arguments in called method
+        #697 - [Tumblr] Update posting function
+        #703 - [GitHub] Update provider to recognize verified email
+        #705 - [Plurk] Update to use https
+
+2.8.0 - October 29 2016
+      BREAKING:
+        #688 - [Facebook] Update Provider to use newer API version 
+        #691 - [Google+] Correct age range
+      New providers:
+        #673 - Strava
+        #682 - Amazon
+      New:
+        #679 - Allow setting custom start & done endpoints (#680 docs)
+        #689 - [LinkedIn] Add current organization and job title to the user profile
+        #690 - [Pinterest] Provider updates and new API calls
+      Fixes:
+        #658 - [Windows Live] Workaround for authentication
+        #684 - [Twitter] Set emailVerified
+        #685 - [LinkedIn] Remove array shorthand constructor
+        #692 - [Tumblr] Use https protocol for tumblr urls
+
+2.7.0 - September 4 2016
+      New providers:
+        #639 - Humanitarian ID
+        #649 - Pinterest
+        #653 - Weibo
+        #661 - Dataporten
       New:
         #612 - [OAuth2Client][improvement] Be able to specify decode json step per each api call
-        
+        #638 - Make use of the redirect mode
+        #655 - [OAuth2Client][improvement] Can now make `DELETE` and `PATCH` calls.
+        #668 - [LinkedIn] Add ability to set fields
+      Fixes:
+        #637 - [BitBucket] Fix fetch email
+        #610 - Fixes redirect in auth after user pushes the browser back button
+        #634 - [Google+] correct age values
+        #650 - [Vkontakte] Update URLs and small fixes with reformat
+        #656 - [Sina] Remove duplicate expression
+        #657 - Fixed issue with empty redirect mode configuration preventing redirection
+        #669 - Fix PHP Notice when $_SERVER["QUERY_STRING"] is not defined
+
 2.6.0 - January 12 2016
       New providers:
         #546 + #547 - GitLab OAuth2

@@ -138,6 +138,8 @@ class OAuth2Client
     switch( $method ){
       case 'GET'  : $response = $this->request( $url, $parameters, "GET"  ); break;
       case 'POST' : $response = $this->request( $url, $parameters, "POST" ); break;
+      case 'DELETE' : $response = $this->request( $url, $parameters, "DELETE" ); break;
+      case 'PATCH'  : $response = $this->request( $url, $parameters, "PATCH" ); break;
     }
 
     if( $response && $decode_json ){
@@ -205,8 +207,10 @@ class OAuth2Client
     Hybrid_Logger::info( "Enter OAuth2Client::request( $url )" );
     Hybrid_Logger::debug( "OAuth2Client::request(). dump request params: ", serialize( $params ) );
 
+	$urlEncodedParams = http_build_query($params, '', '&');
+
     if( $type == "GET" ){
-      $url = $url . ( strpos( $url, '?' ) ? '&' : '?' ) . http_build_query($params, '', '&');
+      $url = $url . ( strpos( $url, '?' ) ? '&' : '?' ) . $urlEncodedParams;
     }
 
     $this->http_info = array();
@@ -231,9 +235,20 @@ class OAuth2Client
 
     if( $type == "POST" ){
       curl_setopt($ch, CURLOPT_POST, 1);
-      if($params) curl_setopt( $ch, CURLOPT_POSTFIELDS, $params );
+	  
+	  // Using URL encoded params here instead of a more convenient array
+	  // cURL will set a wrong HTTP Content-Type header if using an array (cf. http://www.php.net/manual/en/function.curl-setopt.php, Notes section for "CURLOPT_POSTFIELDS")
+	  // OAuth requires application/x-www-form-urlencoded Content-Type (cf. https://tools.ietf.org/html/rfc6749#section-2.3.1)
+      if($params) curl_setopt( $ch, CURLOPT_POSTFIELDS, $urlEncodedParams);
     }
-
+    if( $type == "DELETE" ){
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+    }
+    if( $type == "PATCH" ){
+      curl_setopt($ch, CURLOPT_POST, 1);
+      if($params) curl_setopt( $ch, CURLOPT_POSTFIELDS, $params );
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH");
+    }
     $response = curl_exec($ch);
     if( $response === false ) {
         Hybrid_Logger::error( "OAuth2Client::request(). curl_exec error: ", curl_error($ch) );
@@ -262,4 +277,18 @@ class OAuth2Client
 
     return $result;
   }
+  /**
+ * DELETE wrapper for provider apis request
+ */
+ function delete( $url, $parameters = array() )
+ {
+   return $this->api( $url, 'DELETE', $parameters );
+ }
+ /**
+ * PATCH wrapper for provider apis request
+ */
+ function patch( $url, $parameters = array() )
+ {
+    return $this->api( $url, 'PATCH', $parameters );
+ }
 }
